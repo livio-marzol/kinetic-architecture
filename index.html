@@ -76,7 +76,11 @@
 
   <!-- Floating Image Preview for Curated Projects -->
   <div class="project-floating-preview" id="floatingPreview" aria-hidden="true">
-    <img src="/project-01.jpg" alt="Project Preview" id="floatingPreviewImg" />
+    <div class="floating-preview-inner">
+      <img src="/project-01.jpg" alt="The Shifting Monolith" class="preview-layer is-active" data-preview-id="01" loading="eager" />
+      <img src="/project-02.jpg" alt="Equilibria Pavilion" class="preview-layer" data-preview-id="02" loading="eager" />
+      <img src="/project-03.jpg" alt="Aerodynamic Louvers" class="preview-layer" data-preview-id="03" loading="eager" />
+    </div>
   </div>
 
   <!-- Site Header / Minimal Navigation -->
@@ -192,7 +196,7 @@
 
           <div class="projects-grid">
             <!-- Project 01 -->
-            <article class="project-item" data-preview="/project-01.jpg" data-cursor="EXPLORE">
+            <article class="project-item" data-project-id="01" data-preview="/project-01.jpg" data-cursor="EXPLORE">
               <span class="project-idx">01</span>
               <div class="project-name-group">
                 <h3 class="project-name">The Shifting Monolith</h3>
@@ -204,7 +208,7 @@
             </article>
 
             <!-- Project 02 -->
-            <article class="project-item" data-preview="/project-02.jpg" data-cursor="EXPLORE">
+            <article class="project-item" data-project-id="02" data-preview="/project-02.jpg" data-cursor="EXPLORE">
               <span class="project-idx">02</span>
               <div class="project-name-group">
                 <h3 class="project-name">Equilibria Pavilion</h3>
@@ -216,7 +220,7 @@
             </article>
 
             <!-- Project 03 -->
-            <article class="project-item" data-preview="/project-03.jpg" data-cursor="EXPLORE">
+            <article class="project-item" data-project-id="03" data-preview="/project-03.jpg" data-cursor="EXPLORE">
               <span class="project-idx">03</span>
               <div class="project-name-group">
                 <h3 class="project-name">Aerodynamic Louvers</h3>

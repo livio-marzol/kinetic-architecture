@@ -1,11 +1,12 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getLenis } from './smooth-scroll.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function initProjectsInteractions() {
   const floatingPreview = document.getElementById('floatingPreview');
-  const previewImg = document.getElementById('floatingPreviewImg');
+  const previewLayers = document.querySelectorAll('.preview-layer');
   const projectItems = document.querySelectorAll('.project-item');
 
   if (projectItems.length === 0) return;
@@ -13,7 +14,7 @@ export function initProjectsInteractions() {
   const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
   // Preview flutuante ativo somente em dispositivos que possuem mouse/cursor
-  if (!isTouchDevice && floatingPreview && previewImg) {
+  if (!isTouchDevice && floatingPreview) {
     let mouseX = 0;
     let mouseY = 0;
     let targetX = 0;
@@ -23,7 +24,7 @@ export function initProjectsInteractions() {
     window.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-    });
+    }, { passive: true });
 
     function updateFloatingPosition() {
       if (isHovering) {
@@ -38,13 +39,23 @@ export function initProjectsInteractions() {
 
     projectItems.forEach((item) => {
       item.addEventListener('mouseenter', () => {
-        const imgSrc = item.getAttribute('data-preview');
-        if (imgSrc) {
-          previewImg.src = imgSrc;
-          isHovering = true;
-          floatingPreview.style.opacity = '1';
-          floatingPreview.style.transform = 'translate(-50%, -50%) scale(1)';
+        const projectId = item.getAttribute('data-project-id') || item.querySelector('.project-idx')?.textContent.trim();
+        
+        // Ativação da camada de preview correspondente com cross-fade instantâneo
+        if (previewLayers.length > 0 && projectId) {
+          previewLayers.forEach((layer) => {
+            const layerId = layer.getAttribute('data-preview-id');
+            if (layerId === projectId) {
+              layer.classList.add('is-active');
+            } else {
+              layer.classList.remove('is-active');
+            }
+          });
         }
+
+        isHovering = true;
+        floatingPreview.style.opacity = '1';
+        floatingPreview.style.transform = 'translate(-50%, -50%) scale(1)';
       });
 
       item.addEventListener('mouseleave', () => {
@@ -55,7 +66,7 @@ export function initProjectsInteractions() {
     });
   }
 
-  // Modal Elements & Logic (Funciona em Desktop E Mobile igualmente!)
+  // Modal Elements & Logic (Funciona em Desktop E Mobile perfeitamente)
   const modal = document.getElementById('projectModal');
   const modalCloseBtn = document.getElementById('modalCloseBtn');
   const modalImg = document.getElementById('modalProjectImg');
@@ -74,13 +85,16 @@ export function initProjectsInteractions() {
     }
 
     const imgSrc = item.getAttribute('data-preview');
-    const idx = item.querySelector('.project-idx')?.textContent || '01';
-    const title = item.querySelector('.project-name')?.textContent || '';
-    const discipline = item.querySelector('.project-discipline')?.textContent || '';
-    const location = item.querySelector('.project-location')?.textContent || '';
-    const year = item.querySelector('.project-year')?.textContent || '';
+    const idx = item.querySelector('.project-idx')?.textContent.trim() || '01';
+    const title = item.querySelector('.project-name')?.textContent.trim() || '';
+    const discipline = item.querySelector('.project-discipline')?.textContent.trim() || '';
+    const location = item.querySelector('.project-location')?.textContent.trim() || '';
+    const year = item.querySelector('.project-year')?.textContent.trim() || '';
 
-    if (modalImg) modalImg.src = imgSrc;
+    if (modalImg) {
+      modalImg.src = imgSrc;
+      modalImg.alt = title;
+    }
     if (modalIdx) modalIdx.textContent = idx;
     if (modalTitle) modalTitle.textContent = title;
     if (modalDiscipline) modalDiscipline.textContent = discipline;
@@ -90,6 +104,12 @@ export function initProjectsInteractions() {
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+
+    // Trava o scroll suave do Lenis para impedir rolagem de fundo com modal aberto
+    const lenisInstance = getLenis();
+    if (lenisInstance) {
+      lenisInstance.stop();
+    }
   }
 
   function closeProjectModal() {
@@ -97,6 +117,12 @@ export function initProjectsInteractions() {
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+
+    // Reativa o scroll suave do Lenis
+    const lenisInstance = getLenis();
+    if (lenisInstance) {
+      lenisInstance.start();
+    }
   }
 
   projectItems.forEach((item) => {
