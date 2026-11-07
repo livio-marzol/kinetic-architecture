@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Structa Studies — Kinetic Architecture & Sculptural Form</title>
+  <meta name="description" content="Structa Studies is a research-driven architecture laboratory engineering responsive, kinetic concrete structures and dynamic spatial equilibrium." />
+  
+  <!-- Inline Favicon to prevent 404 -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23080a0d'/><circle cx='50' cy='50' r='32' fill='%23f59e0b'/></svg>" />
+
+  <!-- Force absolute top position on page load and prevent browser scroll restoration -->
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname);
+    }
+    window.scrollTo(0, 0);
+    if (document.documentElement) {
+      document.documentElement.scrollTop = 0;
+    }
+  </script>
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="/src/styles/main.css" />
+  <link rel="stylesheet" href="/src/styles/cursor.css" />
+  <link rel="stylesheet" href="/src/styles/hero.css" />
+  <link rel="stylesheet" href="/src/styles/manifesto.css" />
+  <link rel="stylesheet" href="/src/styles/projects.css" />
+  <link rel="stylesheet" href="/src/styles/footer.css" />
+</head>
+<body>
+  <!-- Ambient Grain Overlay -->
+  <div class="ambient-mesh" aria-hidden="true"></div>
+
+  <!-- Custom Kinetic Magnetic Cursor -->
+  <div class="custom-cursor" aria-hidden="true"></div>
+  <div class="custom-cursor-follower" aria-hidden="true">
+    <span class="cursor-label">EXPLORE</span>
+  </div>
+
+  <!-- Floating Image Preview for Curated Projects -->
+  <div class="project-floating-preview" id="floatingPreview" aria-hidden="true">
+    <img src="/project-01.jpg" alt="Project Preview" id="floatingPreviewImg" />
+  </div>
+
+  <!-- Site Header / Minimal Navigation -->
+  <header class="site-header" id="siteHeader">
+    <a href="#hero" class="brand-wrapper" data-cursor="STRUCTA">
+      <span class="brand-title">Structa Studies</span>
+      <span class="brand-subtitle">Kinetic Architecture</span>
+    </a>
+
+    <div class="header-status">
+      <span class="status-pulse"></span>
+      <span>EQUILIBRIUM ACTIVE // 52°N 13°E</span>
+    </div>
+
+    <nav class="header-nav">
+      <a href="#manifesto" class="nav-link" data-cursor="READ">Philosophy</a>
+      <a href="#projects" class="nav-link" data-cursor="VIEW">Works</a>
+      <a href="#contact" class="btn-contact" data-cursor="TALK">Inquire</a>
+    </nav>
+  </header>
+
+  <main id="smooth-wrapper">
+    <div id="smooth-content">
+
+      <!-- ACT I: HERO KINETIC MONUMENT -->
+      <section class="hero-section" id="hero">
+        <!-- Three.js GLSL Kinetic Architecture Stage -->
+        <div class="hero-stage" aria-hidden="true">
+          <canvas id="heroCanvas" class="hero-canvas"></canvas>
+          <div class="hero-overlay-depth"></div>
+          <div class="hero-overlay-bottom"></div>
+        </div>
+
+        <!-- Foreground Editorial Typography & Meta -->
+        <div class="hero-content">
+          <div class="hero-meta-bar">
+            <span class="meta-tag">Adaptive Monoliths</span>
+            <span class="meta-coords">REF: ST-2026 // FLUID CONCRETE DYNAMICS</span>
+          </div>
+
+          <div class="hero-title-group" id="heroTitles">
+            <div class="hero-title-line">
+              <h1 class="hero-title" data-cursor="KINETIC">KINETIC</h1>
+            </div>
+            <div class="hero-title-line">
+              <h1 class="hero-title outline" data-cursor="STRUCTA">ARCHITECTURE</h1>
+            </div>
+          </div>
+
+          <div class="hero-footer-bar">
+            <p class="hero-statement">
+              Transforming brutalist mass into responsive organisms. We weave <strong>fluid concrete geometry</strong> and living amber illumination into perpetual spatial motion.
+            </p>
+
+            <a href="#manifesto" class="hero-scroll-cta" id="scrollCta" data-cursor="DESCEND">
+              <span class="scroll-label">EXPLORE MANIFESTO</span>
+              <div class="scroll-track">
+                <div class="scroll-thumb"></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACT II: MANIFESTO & PHILOSOPHY -->
+      <section class="manifesto-section" id="manifesto">
+        <div class="manifesto-container">
+          <div class="manifesto-text-col">
+            <span class="section-label">Architectural Thesis</span>
+            <h2 class="manifesto-quote">
+              "We reject the static monument. Buildings must <span class="highlight">breathe, articulate, and flex</span> against gravity."
+            </h2>
+            <p class="manifesto-description">
+              Formulated as an architectural laboratory, Structa Studies investigates the threshold where high-tensile engineering meets undulating cast surfaces. Each structure is conceived not as an immovable shelter, but as a calibrated instrument responsive to sunlight, thermal shift, and pedestrian velocity.
+            </p>
+
+            <div class="manifesto-metrics">
+              <div class="metric-item">
+                <span class="metric-value">0.04s</span>
+                <span class="metric-label">Kinetic Latency</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-value">480 kN</span>
+                <span class="metric-label">Adaptive Tensile Load</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-value">100%</span>
+                <span class="metric-label">Daylight Autonomy</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="manifesto-visual-col">
+            <div class="manifesto-image-card" data-cursor="PAVILION">
+              <img src="/manifesto.jpg" alt="People resting in urban kinetic plaza" loading="lazy" />
+              <div class="manifesto-image-badge">Plaza Equilibrium // Field Study 04</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACT III: CURATED WORKS (3 SELECTED PROJECTS) -->
+      <section class="projects-section" id="projects">
+        <div class="projects-container">
+          <div class="projects-header">
+            <div>
+              <span class="section-label">Selected Portfolio</span>
+              <h2 class="projects-title">Structural Studies</h2>
+            </div>
+            <span class="projects-counter">03 CURATED EDITIONS (2025—2026)</span>
+          </div>
+
+          <div class="projects-grid">
+            <!-- Project 01 -->
+            <article class="project-item" data-preview="/project-01.jpg" data-cursor="EXPLORE">
+              <span class="project-idx">01</span>
+              <div class="project-name-group">
+                <h3 class="project-name">The Shifting Monolith</h3>
+                <span class="project-discipline">Brutalist Museum Tower & Dynamic Cantilevers</span>
+              </div>
+              <span class="project-location">Zurich, Switzerland</span>
+              <span class="project-year">2026</span>
+              <div class="project-arrow" aria-hidden="true">&#8599;</div>
+            </article>
+
+            <!-- Project 02 -->
+            <article class="project-item" data-preview="/project-02.jpg" data-cursor="EXPLORE">
+              <span class="project-idx">02</span>
+              <div class="project-name-group">
+                <h3 class="project-name">Equilibria Pavilion</h3>
+                <span class="project-discipline">Floating Library Volumes & Counterbalanced Timber</span>
+              </div>
+              <span class="project-location">Oslo, Norway</span>
+              <span class="project-year">2025</span>
+              <div class="project-arrow" aria-hidden="true">&#8599;</div>
+            </article>
+
+            <!-- Project 03 -->
+            <article class="project-item" data-preview="/project-03.jpg" data-cursor="EXPLORE">
+              <span class="project-idx">03</span>
+              <div class="project-name-group">
+                <h3 class="project-name">Aerodynamic Louvers</h3>
+                <span class="project-discipline">High-Rise Kinetic Fins & Wind Dissipation</span>
+              </div>
+              <span class="project-location">Tokyo, Japan</span>
+              <span class="project-year">2026</span>
+              <div class="project-arrow" aria-hidden="true">&#8599;</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER / INQUIRY -->
+      <footer class="site-footer" id="contact">
+        <div class="footer-container">
+          <div class="footer-cta-block">
+            <span class="footer-lead">Collaboration & Spatial Research</span>
+            <h2 class="footer-headline">Engage With Continuous Form</h2>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=eduardostructa@gmail.com&su=Project%20Inquiry%20%2F%2F%20Structa%20Studies" target="_blank" rel="noopener noreferrer" class="footer-email-link" data-cursor="GMAIL">
+              inquiries@structastudies.com
+            </a>
+          </div>
+
+          <div class="footer-info-grid">
+            <div class="info-brand">
+              <span class="info-title">Structa Studies</span>
+              <p class="info-desc">
+                Kinetic brutalism, lightweight shells, and responsive architectural environments for cultural institutions worldwide.
+              </p>
+            </div>
+
+            <div class="studio-col">
+              <span class="studio-city">Berlin</span>
+              <span class="studio-address">Köpenicker Str. 124<br />10179 Berlin, DE</span>
+            </div>
+
+            <div class="studio-col">
+              <span class="studio-city">Zurich</span>
+              <span class="studio-address">Limmatquai 88<br />8001 Zürich, CH</span>
+            </div>
+
+            <div class="studio-col">
+              <span class="studio-city">Tokyo</span>
+              <span class="studio-address">Minato-ku 4-1-8<br />Tokyo 105-0001, JP</span>
+            </div>
+
+            <div class="footer-back-top">
+              <button class="btn-back-top" id="btnBackTop" data-cursor="TOP">
+                <span>&#8593; Apex</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="footer-bottom-bar">
+            <span>&copy; 2026 Structa Studies Ltd. All rights reserved.</span>
+            <span>Architectural Engineering & Kinetic Design System</span>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- Cinematic Fullscreen Project Modal Lightbox -->
+  <div class="project-modal" id="projectModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="project-modal-dialog">
+      <div class="project-modal-header">
+        <div class="project-modal-meta">
+          <span id="modalProjectIdx">01</span>
+          <span>//</span>
+          <span>ARCHITECTURAL FIELD STUDY</span>
+        </div>
+        <button class="project-modal-close" id="modalCloseBtn" data-cursor="CLOSE" aria-label="Close modal">
+          <span>CLOSE [ESC]</span>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="project-modal-body">
+        <img src="" alt="" class="project-modal-img" id="modalProjectImg" />
+      </div>
+      <div class="project-modal-footer">
+        <div class="modal-title-group">
+          <h3 class="modal-project-title" id="modalProjectTitle">Project Title</h3>
+          <p class="modal-project-discipline" id="modalProjectDiscipline">Discipline</p>
+        </div>
+        <div class="modal-location-group">
+          <span id="modalProjectLocation">Location</span> &mdash; <span id="modalProjectYear">Year</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Orchestration Script -->
+  <script type="module" src="/src/scripts/main.js"></script>
+</body>
+</html>

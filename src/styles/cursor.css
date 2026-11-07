@@ -1,0 +1,90 @@
+/* Custom Kinetic Magnetic Cursor */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: var(--amber-bright);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease, transform 0.1s linear;
+  box-shadow: 0 0 12px var(--amber-bright);
+}
+
+.custom-cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(224, 135, 38, 0.45);
+  background: rgba(224, 135, 38, 0.04);
+  backdrop-filter: blur(2px);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.35s var(--ease-out-expo),
+              height 0.35s var(--ease-out-expo),
+              background 0.35s ease,
+              border-color 0.35s ease,
+              transform 0.18s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.cursor-label {
+  font-family: var(--font-tech);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--concrete-bright);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.25s ease, transform 0.25s var(--ease-out-expo);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Cursor hover states */
+body.cursor-hover .custom-cursor {
+  transform: translate(-50%, -50%) scale(0.4);
+  opacity: 0.5;
+}
+
+body.cursor-hover .custom-cursor-follower {
+  width: 64px;
+  height: 64px;
+  background: rgba(224, 135, 38, 0.18);
+  border-color: var(--amber-bright);
+}
+
+body.cursor-action .custom-cursor-follower {
+  width: 84px;
+  height: 84px;
+  background: rgba(8, 10, 13, 0.85);
+  border-color: var(--amber-bright);
+  box-shadow: 0 0 24px rgba(224, 135, 38, 0.3);
+}
+
+body.cursor-action .cursor-label {
+  opacity: 1;
+  transform: scale(1);
+}
+
+body.cursor-action .custom-cursor {
+  opacity: 0;
+}
+
+/* Desabilitar em mobile / touch */
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor,
+  .custom-cursor-follower {
+    display: none !important;
+  }
+}

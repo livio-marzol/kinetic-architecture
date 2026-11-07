@@ -1,0 +1,282 @@
+/* Hero Section - Kinetic Monumental Reveal */
+.hero-section {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 700px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 4rem 3.5rem;
+  background-color: var(--bg-deep);
+}
+
+/* Three.js GLSL Kinetic Canvas Stage */
+.hero-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Gradientes cinemáticos sobre a Hero */
+.hero-overlay-depth {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 60%,
+    transparent 20%,
+    rgba(8, 10, 13, 0.4) 65%,
+    rgba(8, 10, 13, 0.95) 100%
+  );
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hero-overlay-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 65%;
+  background: linear-gradient(to top, var(--bg-deep) 0%, rgba(8, 10, 13, 0.7) 45%, transparent 100%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Luz dinâmica interativa no interior âmbar da obra */
+.hero-amber-core {
+  position: absolute;
+  bottom: 25%;
+  left: 50%;
+  width: 600px;
+  height: 400px;
+  transform: translate(-50%, 0);
+  background: radial-gradient(circle, var(--amber-glow) 0%, transparent 70%);
+  filter: blur(50px);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.7;
+  mix-blend-mode: screen;
+  transition: opacity 0.8s ease, transform 0.3s ease-out;
+}
+
+/* Conteúdo da Hero */
+.hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hero-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line-subtle);
+  padding-bottom: 1.25rem;
+}
+
+.meta-tag {
+  font-family: var(--font-tech);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber-bright);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.meta-tag::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  background: var(--amber-bright);
+}
+
+.meta-coords {
+  font-family: var(--font-tech);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--concrete-muted);
+}
+
+.hero-title-group {
+  overflow: hidden;
+}
+
+.hero-title-line {
+  display: block;
+  overflow: hidden;
+}
+
+.hero-title {
+  font-family: var(--font-monument);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 6.4vw, 6.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--concrete-bright);
+  max-width: 100%;
+  word-break: keep-all;
+}
+
+.hero-title.outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(240, 236, 225, 0.4);
+  transition: -webkit-text-stroke 0.4s ease;
+}
+
+.hero-title.outline:hover {
+  -webkit-text-stroke: 1.5px var(--amber-bright);
+}
+
+.hero-footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 1.25rem;
+}
+
+.hero-statement {
+  max-width: 480px;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--concrete-base);
+  font-weight: 300;
+}
+
+.hero-statement strong {
+  font-weight: 600;
+  color: var(--concrete-bright);
+}
+
+.hero-scroll-cta {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.scroll-track {
+  width: 1px;
+  height: 48px;
+  background: var(--line-subtle);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: var(--amber-bright);
+  animation: scrollDown 2.2s infinite var(--ease-out-expo);
+}
+
+@keyframes scrollDown {
+  0% { transform: translateY(-100%); }
+  50% { transform: translateY(100%); }
+  100% { transform: translateY(200%); }
+}
+
+.scroll-label {
+  font-family: var(--font-tech);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--concrete-muted);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  transition: color 0.3s ease;
+}
+
+.hero-scroll-cta:hover .scroll-label {
+  color: var(--amber-bright);
+}
+
+/* Responsividade Hero */
+@media (max-width: 900px) {
+  .hero-section {
+    padding: 5rem 2rem 3rem;
+  }
+  .hero-meta-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .hero-footer-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .hero-scroll-cta {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-section {
+    padding: 5.5rem 1rem 2rem;
+    min-height: 100svh;
+    height: auto;
+    justify-content: center; /* Elimina o vão gigante entre o topo e o texto */
+  }
+  .hero-content {
+    gap: 1.1rem;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .hero-meta-bar {
+    padding-bottom: 0.65rem;
+  }
+  .hero-title {
+    font-size: clamp(1.15rem, 5.2vw, 1.85rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .hero-title.outline {
+    -webkit-text-stroke: 1px rgba(240, 236, 225, 0.45);
+  }
+  .hero-footer-bar {
+    margin-top: 0.4rem;
+  }
+  .hero-statement {
+    font-size: clamp(0.78rem, 2.8vw, 0.86rem);
+    line-height: 1.5;
+  }
+  .meta-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+  }
+  .meta-coords {
+    font-size: 0.54rem;
+    letter-spacing: 0.08em;
+  }
+}

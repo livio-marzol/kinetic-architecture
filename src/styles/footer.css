@@ -1,0 +1,213 @@
+/* Footer Section - Minimal & Structural */
+.site-footer {
+  position: relative;
+  padding: 10rem 3.5rem 5rem;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--bg-deep);
+  border-top: 1px solid var(--line-subtle);
+  overflow: hidden;
+}
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.footer-cta-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.footer-lead {
+  font-family: var(--font-tech);
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--amber-core);
+}
+
+.footer-headline {
+  font-family: var(--font-monument);
+  font-size: clamp(2.4rem, 6vw, 5.5rem);
+  font-weight: 800;
+  color: var(--concrete-bright);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.footer-email-link {
+  font-family: var(--font-tech);
+  font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+  color: var(--concrete-base);
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  width: fit-content;
+  transition: color 0.3s ease;
+  padding-bottom: 4px;
+}
+
+.footer-email-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--amber-bright);
+  transform: scaleX(0.2);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.footer-email-link:hover {
+  color: var(--amber-bright);
+}
+
+.footer-email-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Informações de Estúdios e Dados Legais */
+.footer-info-grid {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(3, 1fr) 1fr;
+  gap: 3rem;
+  padding-top: 4rem;
+  border-top: 1px solid var(--line-subtle);
+}
+
+.info-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.info-title {
+  font-family: var(--font-monument);
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--concrete-bright);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.info-desc {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--concrete-muted);
+  line-height: 1.6;
+}
+
+.studio-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.studio-city {
+  font-family: var(--font-tech);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--concrete-bright);
+  font-weight: 600;
+}
+
+.studio-address {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--concrete-muted);
+  line-height: 1.5;
+}
+
+.footer-back-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.btn-back-top {
+  background: none;
+  border: 1px solid var(--line-subtle);
+  color: var(--concrete-bright);
+  padding: 0.8rem 1.4rem;
+  border-radius: 999px;
+  font-family: var(--font-tech);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s var(--ease-out-expo);
+}
+
+.btn-back-top:hover {
+  border-color: var(--amber-bright);
+  background: rgba(224, 135, 38, 0.1);
+  transform: translateY(-3px);
+}
+
+.footer-bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line-subtle);
+  font-family: var(--font-tech);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--concrete-muted);
+}
+
+/* Responsividade Rodapé */
+@media (max-width: 900px) {
+  .site-footer {
+    padding: 5rem 1.5rem 2.5rem;
+  }
+  .footer-container {
+    gap: 4rem;
+  }
+  .footer-info-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .footer-back-top {
+    align-items: flex-start;
+  }
+  .footer-bottom-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    padding: 4.5rem 1.25rem 2rem;
+  }
+  .footer-headline {
+    font-size: clamp(1.8rem, 7.5vw, 2.7rem);
+    line-height: 1.1;
+  }
+  .footer-email-link {
+    font-size: 1.15rem;
+    word-break: break-all;
+  }
+  .btn-back-top {
+    width: 100%;
+    justify-content: center;
+    padding: 0.8rem 1.25rem;
+  }
+}
