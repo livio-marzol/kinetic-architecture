@@ -59,6 +59,7 @@ export function initThreeHero() {
 
   // 3. Texturas: Imagem da Fachada + Mapa de Profundidade
   const textureLoader = new THREE.TextureLoader();
+  textureLoader.setCrossOrigin('anonymous');
   let resolveReady = null;
   let isReady = false;
 

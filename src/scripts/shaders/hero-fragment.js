@@ -1,5 +1,9 @@
 export const fragmentShader = /* glsl */ `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
 precision highp float;
+#else
+precision mediump float;
+#endif
 
 uniform sampler2D uTexture;
 uniform sampler2D uDepthMap;

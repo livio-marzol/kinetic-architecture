@@ -9,8 +9,8 @@
   <!-- Inline Favicon to prevent 404 -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23080a0d'/><circle cx='50' cy='50' r='32' fill='%23f59e0b'/></svg>" />
 
-  <!-- Preload high priority Hero WebGL texture to guarantee instant render on refresh -->
-  <link rel="preload" as="image" href="/hero.jpg" fetchpriority="high" />
+  <!-- Preload high priority Hero WebGL texture with matching CORS mode -->
+  <link rel="preload" as="image" href="/hero.jpg" fetchpriority="high" crossorigin="anonymous" />
 
   <!-- Force absolute top position on page load and prevent browser scroll restoration -->
   <script>
@@ -30,6 +30,11 @@
         document.documentElement.scrollTop = 0;
       }
     });
+
+    // Timeout de segurança absoluto: garante que a página nunca fique travada em telas móveis
+    setTimeout(function () {
+      document.documentElement.classList.remove('is-loading');
+    }, 1500);
   </script>
 
   <!-- Critical Inline CSS: Prevents FOUC on page load/refresh before external stylesheets arrive -->

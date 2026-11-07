@@ -80,10 +80,16 @@ export function createSyntheticDepthTexture() {
   ctx.bezierCurveTo(340, 430, 180, 350, 40, 240);
   ctx.fill();
 
-  // 5. Suavização Gaussiana para transições naturais de relevo 2.5D
-  ctx.filter = 'blur(18px)';
-  ctx.drawImage(canvas, 0, 0);
-  ctx.filter = 'none';
+  // 5. Suavização Gaussiana para transições naturais de relevo 2.5D (com proteção para mobile)
+  try {
+    if ('filter' in ctx) {
+      ctx.filter = 'blur(16px)';
+      ctx.drawImage(canvas, 0, 0);
+      ctx.filter = 'none';
+    }
+  } catch (e) {
+    // Fallback silencioso para navegadores que não suportam ctx.filter
+  }
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.minFilter = THREE.LinearFilter;
