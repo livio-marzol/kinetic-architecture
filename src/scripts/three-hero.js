@@ -32,14 +32,22 @@ export function initThreeHero() {
     } catch (e) {}
   }
 
-  // 1. Setup do Renderer WebGL de Alta Performance
-  renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-    alpha: true,
-    powerPreference: 'high-performance',
-    stencil: false,
-  });
+  // 1. Setup do Renderer WebGL com proteção e detecção de contexto
+  try {
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: 'high-performance',
+      stencil: false,
+    });
+  } catch (err) {
+    console.warn('WebGL initialization failed, using native image fallback:', err);
+    return null;
+  }
+
+  const isMobile = window.innerWidth <= 768;
+  const maxPixelRatio = isMobile ? 1.5 : 2; // Otimizado para GPUs móveis (ex: Adreno 610)
 
   const getContainerDimensions = () => {
     const rect = heroContainer.getBoundingClientRect();
@@ -49,17 +57,14 @@ export function initThreeHero() {
   };
 
   const { width: initialWidth, height: initialHeight } = getContainerDimensions();
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  // Importante: 3º parâmetro 'false' para NÃO sobrescrever os estilos CSS do canvas
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
   renderer.setSize(initialWidth, initialHeight, false);
 
   // 2. Cena e Câmera Ortográfica (Quad Fullscreen)
   scene = new THREE.Scene();
   camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-  // 3. Texturas: Imagem da Fachada + Mapa de Profundidade
-  const textureLoader = new THREE.TextureLoader();
-  textureLoader.setCrossOrigin('anonymous');
+  // 3. Texturas: Reutiliza diretamente a imagem nativa do DOM eliminando conflitos de CORS e Preload
   let resolveReady = null;
   let isReady = false;
 
@@ -72,32 +77,47 @@ export function initThreeHero() {
     };
   });
 
-  const baseTexture = textureLoader.load(
-    '/hero.jpg',
-    (tex) => {
-      tex.generateMipmaps = false;
-      tex.minFilter = THREE.LinearFilter;
-      tex.magFilter = THREE.LinearFilter;
-      tex.needsUpdate = true;
-      if (material && tex.image) {
-        material.uniforms.uImageResolution.value.set(tex.image.width || 2752, tex.image.height || 1536);
+  const fallbackImg = document.getElementById('heroFallbackImg');
+  let baseTexture;
+
+  if (fallbackImg && fallbackImg.complete && fallbackImg.naturalWidth > 0) {
+    baseTexture = new THREE.Texture(fallbackImg);
+    baseTexture.generateMipmaps = false;
+    baseTexture.minFilter = THREE.LinearFilter;
+    baseTexture.magFilter = THREE.LinearFilter;
+    baseTexture.needsUpdate = true;
+    resolveReady();
+  } else if (fallbackImg) {
+    baseTexture = new THREE.Texture(fallbackImg);
+    baseTexture.generateMipmaps = false;
+    baseTexture.minFilter = THREE.LinearFilter;
+    baseTexture.magFilter = THREE.LinearFilter;
+
+    fallbackImg.addEventListener('load', () => {
+      baseTexture.needsUpdate = true;
+      if (material) {
+        material.uniforms.uImageResolution.value.set(
+          fallbackImg.naturalWidth || 2752,
+          fallbackImg.naturalHeight || 1536
+        );
       }
-      if (resolveReady) resolveReady();
-    },
-    undefined,
-    () => {
-      // Em caso de erro na textura, libera a transição
-      if (resolveReady) resolveReady();
-    }
-  );
+      resolveReady();
+    }, { once: true });
 
-  baseTexture.generateMipmaps = false;
-  baseTexture.minFilter = THREE.LinearFilter;
-  baseTexture.magFilter = THREE.LinearFilter;
-
-  // Verificação imediata se a imagem já estava em cache
-  if (baseTexture.image && baseTexture.image.complete && baseTexture.image.naturalWidth > 0) {
-    if (resolveReady) resolveReady();
+    fallbackImg.addEventListener('error', () => {
+      resolveReady();
+    }, { once: true });
+  } else {
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.setCrossOrigin('anonymous');
+    baseTexture = textureLoader.load('/hero.jpg', () => {
+      resolveReady();
+    }, undefined, () => {
+      resolveReady();
+    });
+    baseTexture.generateMipmaps = false;
+    baseTexture.minFilter = THREE.LinearFilter;
+    baseTexture.magFilter = THREE.LinearFilter;
   }
 
   // Timeout de segurança: nunca bloqueia a página por mais de 250ms
@@ -107,6 +127,10 @@ export function initThreeHero() {
 
   // Mapa de profundidade sintético de alta precisão
   const depthTexture = createSyntheticDepthTexture();
+
+  // Dimensões iniciais da imagem
+  const initialImgW = (fallbackImg && fallbackImg.naturalWidth) ? fallbackImg.naturalWidth : 2752;
+  const initialImgH = (fallbackImg && fallbackImg.naturalHeight) ? fallbackImg.naturalHeight : 1536;
 
   // 4. Shader Material com Uniforms Calibráveis
   material = new THREE.ShaderMaterial({
@@ -118,7 +142,7 @@ export function initThreeHero() {
       uResolution: {
         value: new THREE.Vector2(initialWidth, initialHeight),
       },
-      uImageResolution: { value: new THREE.Vector2(2752, 1536) },
+      uImageResolution: { value: new THREE.Vector2(initialImgW, initialImgH) },
       uMouse: { value: new THREE.Vector2(0, 0) },
       uProgress: { value: 0.0 }, // Inicia em 0.0 (fresta vertical fechada)
       uTime: { value: 0.0 },
@@ -168,19 +192,20 @@ export function initThreeHero() {
     const { width, height } = getContainerDimensions();
 
     renderer.setSize(width, height, false);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
     material.uniforms.uResolution.value.set(width, height);
   }
-  window.addEventListener('resize', onResize, { passive: true });
-  window.addEventListener('load', onResize, { passive: true });
+  window.addEventListener('resize', onResize);
 
-  // 7. Render Loop Fluido (usa performance.now para precisão livre de depreciações)
-  const startTime = performance.now();
+  // 7. Render Loop Otimizado para 60fps com pausa em background
+  const clock = new THREE.Clock();
 
   function render() {
     animationFrameId = requestAnimationFrame(render);
 
-    const elapsedTime = (performance.now() - startTime) * 0.001;
+    if (document.hidden) return; // Economia de bateria quando em segundo plano no celular
+
+    const elapsedTime = clock.getElapsedTime();
 
     if (material) {
       material.uniforms.uTime.value = elapsedTime;
@@ -194,6 +219,16 @@ export function initThreeHero() {
     renderer.render(scene, camera);
   }
   render();
+
+  // Tratamento de Perda de Contexto WebGL em dispositivos móveis
+  canvas.addEventListener('webglcontextlost', (e) => {
+    e.preventDefault();
+    console.warn('WebGL context lost, maintaining native fallback');
+  }, false);
+
+  canvas.addEventListener('webglcontextrestored', () => {
+    onResize();
+  }, false);
 
   return {
     material,
@@ -217,8 +252,8 @@ export function animateShaderEntrance(timeline) {
   targetTimeline.to(material.uniforms.uProgress, {
     value: 1.0,
     duration: 1.8,
-    ease: 'power3.inOut', // Expansão mecânica fluida, sem estalo abrupto
-  }, 0);
+    ease: 'power3.inOut',
+  }, 0.0);
 
   return targetTimeline;
 }
