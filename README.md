@@ -66,5 +66,12 @@ npm run preview
 
 ---
 
+## 📱 Mobile GPU & Performance Optimizations (Adreno / Qualcomm)
+- **Zero-Warning Asset Loading:** Direct native `<img>` integration eliminating browser preload credential discrepancies.
+- **Dynamic Shader Precision:** Automatic `mediump` fallback for mobile fragment shaders.
+- **Fail-Safe WebGL Recovery:** Context-loss detection and native CSS image fallback guaranteeing zero black screens.
+
+---
+
 ## 📄 License
 Private & Proprietary — Structa Studies 2026.
