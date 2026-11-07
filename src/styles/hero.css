@@ -12,6 +12,24 @@
   background-color: var(--bg-deep);
 }
 
+/* Prevenção de FOUC / Piscar de elementos durante o Refresh */
+html.is-loading .site-header {
+  opacity: 0 !important;
+  transform: translateY(-80px) !important;
+}
+
+html.is-loading .hero-title {
+  opacity: 0 !important;
+  transform: translateY(115%) !important;
+}
+
+html.is-loading .hero-meta-bar,
+html.is-loading .hero-statement,
+html.is-loading .hero-scroll-cta {
+  opacity: 0 !important;
+  transform: translateY(20px) !important;
+}
+
 /* Three.js GLSL Kinetic Canvas Stage */
 .hero-stage {
   position: absolute;

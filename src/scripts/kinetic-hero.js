@@ -11,14 +11,14 @@ export function initKineticHero() {
 
   if (!heroSection) return;
 
-  // Estados iniciais antes da revelação
+  // Estados iniciais antes da revelação garantidos via GSAP
   gsap.set(header, {
-    y: -80,
+    y: -50,
     opacity: 0,
   });
 
   gsap.set(titles, {
-    y: '115%',
+    y: '100%',
     opacity: 0,
   });
 
@@ -27,36 +27,38 @@ export function initKineticHero() {
     opacity: 0,
   });
 
+  // Remove a classe de proteção contra FOUC com segurança agora que o GSAP assumiu o controle
+  document.documentElement.classList.remove('is-loading');
+
   // Timeline Cinética Monumental de Abertura
   const tl = gsap.timeline({
-    defaults: { ease: 'expo.out' },
-    delay: 0.2,
+    defaults: { ease: 'power3.out' },
   });
 
-  // 1. Transição do Shader Three.js: Abertura da fresta vertical mecânica (uProgress 0.0 -> 1.0)
+  // 1. Transição do Shader Three.js: Abertura progressiva da fresta vertical mecânica (uProgress 0.0 -> 1.0)
   animateShaderEntrance(tl);
 
   // 2. Tipografia monumental surge em sincronia com a expansão da luz
   tl.to(titles, {
     y: '0%',
     opacity: 1,
-    duration: 1.4,
-    stagger: 0.15,
+    duration: 1.3,
+    stagger: 0.12,
     ease: 'power4.out',
-  }, '-=1.6')
+  }, 0.35)
 
   // 3. Metadados técnicos e header entram suavemente
   .to(header, {
     y: 0,
     opacity: 1,
-    duration: 1.1,
+    duration: 1.0,
     ease: 'power3.out',
-  }, '-=1.2')
+  }, 0.6)
   .to([metaBar, statement, scrollCta], {
     y: 0,
     opacity: 1,
-    duration: 1.1,
+    duration: 1.0,
     stagger: 0.08,
     ease: 'power3.out',
-  }, '-=1.0');
+  }, 0.7);
 }

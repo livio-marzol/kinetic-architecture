@@ -68,20 +68,20 @@ void main() {
   float normalizedX = vUv.x;
   float distFromCenter = abs(normalizedX - 0.5);
 
-  // Abertura mecânica do obturador: de fresta mínima (0.024) até 0.60 (cobrindo a tela inteira)
-  float halfAperture = mix(0.024, 0.58, uProgress);
-  float edgeSoftness = mix(0.010, 0.002, uProgress);
+  // Abertura mecânica do obturador: de fresta mínima (0.02) até 0.53 (cobrindo a tela inteira com folga)
+  float halfAperture = mix(0.02, 0.53, uProgress);
+  float edgeSoftness = mix(0.012, 0.002, uProgress);
 
-  // Máscara da fresta arquitetônica
-  float slitMask = smoothstep(halfAperture + edgeSoftness, halfAperture - edgeSoftness, distFromCenter);
+  // Máscara da fresta arquitetônica (1.0 - smoothstep garante GLSL válido edge0 < edge1 sem undefined behavior)
+  float slitMask = 1.0 - smoothstep(halfAperture - edgeSoftness, halfAperture + edgeSoftness, distFromCenter);
 
   // Brilho Âmbar (Light Leak) nas bordas de corte mecânico
   float edgeDist = abs(distFromCenter - halfAperture);
   float lightLeak = exp(-edgeDist * 48.0) * (1.0 - uProgress * 0.78);
   vec3 amberGlow = uAmberColor * lightLeak * 1.5;
 
-  // Desfoque direcional horizontal sutil perto das bordas durante a abertura
-  float motionBlurEdge = smoothstep(0.045, 0.0, edgeDist) * (1.0 - uProgress) * 0.38;
+  // Desfoque direcional horizontal sutil perto das bordas durante a abertura (edge0 < edge1 rigoroso)
+  float motionBlurEdge = (1.0 - smoothstep(0.0, 0.045, edgeDist)) * (1.0 - uProgress) * 0.38;
   vec3 blurredSample = (
     texture2D(uTexture, displacedUv + vec2(0.0035 * (1.0 - uProgress), 0.0)).rgb +
     texture2D(uTexture, displacedUv - vec2(0.0035 * (1.0 - uProgress), 0.0)).rgb

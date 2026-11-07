@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="is-loading">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +8,9 @@
   
   <!-- Inline Favicon to prevent 404 -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23080a0d'/><circle cx='50' cy='50' r='32' fill='%23f59e0b'/></svg>" />
+
+  <!-- Preload high priority Hero WebGL texture to guarantee instant render on refresh -->
+  <link rel="preload" as="image" href="/hero.jpg" fetchpriority="high" />
 
   <!-- Force absolute top position on page load and prevent browser scroll restoration -->
   <script>
@@ -21,7 +24,35 @@
     if (document.documentElement) {
       document.documentElement.scrollTop = 0;
     }
+    window.addEventListener('pageshow', function (e) {
+      window.scrollTo(0, 0);
+      if (document.documentElement) {
+        document.documentElement.scrollTop = 0;
+      }
+    });
   </script>
+
+  <!-- Critical Inline CSS: Prevents FOUC on page load/refresh before external stylesheets arrive -->
+  <style>
+    html.is-loading .site-header {
+      opacity: 0 !important;
+      transform: translateY(-50px) !important;
+    }
+    html.is-loading .hero-title {
+      opacity: 0 !important;
+      transform: translateY(100%) !important;
+    }
+    html.is-loading .hero-meta-bar,
+    html.is-loading .hero-statement,
+    html.is-loading .hero-scroll-cta {
+      opacity: 0 !important;
+      transform: translateY(20px) !important;
+    }
+    .custom-cursor,
+    .custom-cursor-follower {
+      opacity: 0;
+    }
+  </style>
 
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="/src/styles/main.css" />

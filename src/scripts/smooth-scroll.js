@@ -20,8 +20,21 @@ if (typeof window !== 'undefined') {
   });
 }
 
+let tickerCallback = null;
+
 export function initSmoothScroll() {
   window.scrollTo(0, 0);
+
+  if (lenis) {
+    try {
+      lenis.destroy();
+    } catch (e) {}
+    lenis = null;
+  }
+  if (tickerCallback) {
+    gsap.ticker.remove(tickerCallback);
+    tickerCallback = null;
+  }
 
   lenis = new Lenis({
     duration: 1.2,
@@ -39,17 +52,17 @@ export function initSmoothScroll() {
 
   lenis.on('scroll', ScrollTrigger.update);
 
-  gsap.ticker.add((time) => {
-    lenis.raf(time * 1000);
-  });
+  tickerCallback = (time) => {
+    if (lenis) lenis.raf(time * 1000);
+  };
+  gsap.ticker.add(tickerCallback);
+  // Mantém lagSmoothing ativo para absorver spikes de carga de texturas WebGL sem saltar frames
+  gsap.ticker.lagSmoothing(500, 33);
 
-  gsap.ticker.lagSmoothing(0);
-
-  // Garantir que após os renders o scroll continue 0
+  // Sincronização pós-render
   requestAnimationFrame(() => {
-    window.scrollTo(0, 0);
     if (lenis) {
-      lenis.scrollTo(0, { immediate: true, force: true });
+      lenis.resize();
     }
     ScrollTrigger.refresh();
   });
@@ -94,13 +107,17 @@ export function initSmoothScroll() {
     });
   }
 
-  // Reforço duplo no evento load
-  window.addEventListener('load', () => {
-    window.scrollTo(0, 0);
+  // Reforço de alinhamento de layout no evento load e pageshow (após imagens e fontes estarem 100% calculadas)
+  const syncLayout = () => {
     if (lenis) {
-      lenis.scrollTo(0, { immediate: true, force: true });
+      lenis.resize();
     }
-  });
+    ScrollTrigger.refresh();
+  };
+
+  window.addEventListener('load', syncLayout);
+  window.addEventListener('pageshow', syncLayout);
+  setTimeout(syncLayout, 350);
 
   return lenis;
 }

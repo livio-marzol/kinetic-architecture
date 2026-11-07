@@ -10,8 +10,13 @@
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  transition: opacity 0.3s ease, transform 0.1s linear;
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.1s linear;
   box-shadow: 0 0 12px var(--amber-bright);
+}
+
+body.cursor-active .custom-cursor {
+  opacity: 1;
 }
 
 .custom-cursor-follower {
@@ -27,14 +32,20 @@
   pointer-events: none;
   z-index: 9998;
   transform: translate(-50%, -50%);
+  opacity: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: width 0.35s var(--ease-out-expo),
+  transition: opacity 0.35s ease,
+              width 0.35s var(--ease-out-expo),
               height 0.35s var(--ease-out-expo),
               background 0.35s ease,
               border-color 0.35s ease,
               transform 0.18s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+body.cursor-active .custom-cursor-follower {
+  opacity: 1;
 }
 
 .cursor-label {

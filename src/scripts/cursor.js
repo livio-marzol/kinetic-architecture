@@ -15,10 +15,20 @@ export function initCustomCursor() {
   let dotX = mouseX;
   let dotY = mouseY;
 
+  let hasMoved = false;
+
   window.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-  });
+    if (!hasMoved) {
+      hasMoved = true;
+      dotX = mouseX;
+      dotY = mouseY;
+      followerX = mouseX;
+      followerY = mouseY;
+      document.body.classList.add('cursor-active');
+    }
+  }, { passive: true });
 
   // Render loop com amortecimento suave
   function render() {
